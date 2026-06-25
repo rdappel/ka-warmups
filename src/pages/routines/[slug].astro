@@ -1,0 +1,88 @@
+---
+import SiteBrand from "../../components/SiteBrand.astro";
+
+type WarmupMarkdown = {
+  default: unknown;
+  frontmatter: {
+    title: string;
+    theme: string;
+  };
+};
+
+export async function getStaticPaths() {
+  const routineModules = import.meta.glob<WarmupMarkdown>(
+    "../../content/warmups/routines/*.md",
+    { eager: true },
+  );
+  const routines = Object.entries(routineModules)
+    .map(([path, routine]) => {
+      const slug = path.split(/[\\/]/).pop()?.replace(/\.md$/, "") ?? "";
+
+      return {
+        slug,
+        title: routine.frontmatter.title,
+        theme: routine.frontmatter.theme,
+      };
+    })
+    .sort((a, b) => a.slug.localeCompare(b.slug));
+
+  return routines.map((routine) => {
+    const { slug } = routine;
+
+    return {
+      params: { slug },
+      props: {
+        slug,
+      },
+    };
+  });
+}
+
+const { slug } = Astro.props;
+const routineModules = import.meta.glob<WarmupMarkdown>(
+  "../../content/warmups/routines/*.md",
+  { eager: true },
+);
+const routine = routineModules[`../../content/warmups/routines/${slug}.md`];
+const Content = routine.default;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width" />
+    <meta
+      name="description"
+      content={`${routine.frontmatter.title}: ${routine.frontmatter.theme}`}
+    />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="stylesheet" href="/styles/print.css" />
+    <title>{routine.frontmatter.title}</title>
+  </head>
+  <body>
+    <main class="routine-page">
+      <SiteBrand />
+
+      <header class="page-header">
+        <p class="eyebrow">Warm-up routine</p>
+        <h1>{routine.frontmatter.title}</h1>
+        <div class="routine-meta">
+          <span class="badge">{routine.frontmatter.theme}</span>
+        </div>
+      </header>
+
+      <article class="routine-sections">
+        <section id="routine" class="routine-panel routine-content">
+          <Content />
+        </section>
+      </article>
+
+      <nav class="bottom-nav no-print" aria-label="Back to overview">
+        <a href="/">Back to overview</a>
+        <a href="/exercises/">Exercise Instructions</a>
+      </nav>
+    </main>
+  </body>
+</html>

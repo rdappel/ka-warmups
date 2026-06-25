@@ -1,0 +1,73 @@
+---
+import SiteBrand from "../../components/SiteBrand.astro";
+
+type ExerciseMarkdown = {
+  compiledContent: () => Promise<string>;
+  frontmatter: {
+    title: string;
+  };
+};
+
+const exerciseModules = import.meta.glob<ExerciseMarkdown>(
+  "../../content/warmups/exercises/*.md",
+  { eager: true },
+);
+const exercises = await Promise.all(
+  Object.entries(exerciseModules).map(async ([path, exercise]) => {
+    const slug = path.split(/[\\/]/).pop()?.replace(/\.md$/, "") ?? "";
+
+    return {
+      slug,
+      title: exercise.frontmatter.title,
+      html: await exercise.compiledContent(),
+    };
+  }),
+);
+exercises.sort((a, b) => a.title.localeCompare(b.title));
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width" />
+    <meta
+      name="description"
+      content="Alphabetical exercise and stretch instructions for karate warm-up routines."
+    />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="stylesheet" href="/styles/print.css" />
+    <title>Exercise Instructions</title>
+  </head>
+  <body>
+    <main>
+      <SiteBrand />
+
+      <header class="page-header">
+        <p class="eyebrow">Instruction reference</p>
+        <h1>Exercise Instructions</h1>
+        <p class="lede">
+          Reusable exercise and stretch instructions used across the warm-up routines.
+        </p>
+      </header>
+
+      <section class="exercise-list">
+        {
+          exercises.map((exercise) => (
+            <article class="exercise-entry" id={exercise.slug}>
+              <h2>
+                <a href={`/exercises/${exercise.slug}/`}>{exercise.title}</a>
+              </h2>
+              <Fragment set:html={exercise.html} />
+            </article>
+          ))
+        }
+      </section>
+
+      <nav class="bottom-nav no-print" aria-label="Back to overview">
+        <a href="/">Back to overview</a>
+      </nav>
+    </main>
+  </body>
+</html>

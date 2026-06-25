@@ -1,17 +1,82 @@
 ---
+import SiteBrand from "../components/SiteBrand.astro";
 
+type WarmupMarkdown = {
+  default: unknown;
+  frontmatter: {
+    title: string;
+    description?: string;
+    theme?: string;
+  };
+};
+
+const overviewModules = import.meta.glob<WarmupMarkdown>(
+  "../content/warmups/overview.md",
+  { eager: true },
+);
+const overview = Object.values(overviewModules)[0];
+const OverviewContent = overview.default;
+
+const routineModules = import.meta.glob<WarmupMarkdown>(
+  "../content/warmups/routines/*.md",
+  { eager: true },
+);
+const routines = Object.entries(routineModules)
+  .map(([path, routine]) => {
+    const slug = path.split(/[\\/]/).pop()?.replace(/\.md$/, "") ?? "";
+
+    return {
+      slug,
+      theme: routine.frontmatter.theme,
+    };
+  })
+  .sort((a, b) => a.slug.localeCompare(b.slug));
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={overview.frontmatter.description} />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="stylesheet" href="/styles/print.css" />
+    <title>{overview.frontmatter.title}</title>
+  </head>
+  <body>
+    <main>
+      <SiteBrand />
+
+      <header class="page-header">
+        <p class="eyebrow">Karate warm-ups</p>
+        <h1>{overview.frontmatter.title}</h1>
+        <p class="lede">{overview.frontmatter.description}</p>
+      </header>
+
+      <section id="overview" class="content-section">
+        <OverviewContent />
+      </section>
+
+      <section class="content-section routine-links">
+        <h2>Routines</h2>
+        <ol>
+          {
+            routines.map((routine) => (
+              <li>
+                <a href={`/routines/${routine.slug}/`}>{routine.theme}</a>
+              </li>
+            ))
+          }
+        </ol>
+      </section>
+
+      <section class="content-section">
+        <h2>Exercise Instructions</h2>
+        <p>
+          <a href="/exercises/">Browse all exercise and stretch instructions alphabetically.</a>
+        </p>
+      </section>
+    </main>
+  </body>
 </html>
