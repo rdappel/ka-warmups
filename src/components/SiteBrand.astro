@@ -1,6 +1,10 @@
-<a class="site-brand" href="/" aria-label="Karate America warm-up guide home">
+---
+import { withBase } from "../lib/sitePaths";
+---
+
+<a class="site-brand" href={withBase("/")} aria-label="Karate America warm-up guide home">
   <img
-    src="/logo.png"
+    src={withBase("/logo.png")}
     alt="Karate America"
     width="1024"
     height="1024"

@@ -1,8 +1,10 @@
 ---
 import SiteBrand from "../../components/SiteBrand.astro";
+import { rewriteRootLinks, withBase } from "../../lib/sitePaths";
 
 type WarmupMarkdown = {
   default: unknown;
+  compiledContent: () => Promise<string>;
   frontmatter: {
     title: string;
     theme: string;
@@ -44,21 +46,21 @@ const routineModules = import.meta.glob<WarmupMarkdown>(
   { eager: true },
 );
 const routine = routineModules[`../../content/warmups/routines/${slug}.md`];
-const Content = routine.default;
+const routineHtml = rewriteRootLinks(await routine.compiledContent());
 ---
 
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
+    <link rel="icon" type="image/svg+xml" href={withBase("/favicon.svg")} />
+    <link rel="icon" href={withBase("/favicon.ico")} />
     <meta name="viewport" content="width=device-width" />
     <meta
       name="description"
       content={`${routine.frontmatter.title}: ${routine.frontmatter.theme}`}
     />
     <meta name="generator" content={Astro.generator} />
-    <link rel="stylesheet" href="/styles/print.css" />
+    <link rel="stylesheet" href={withBase("/styles/print.css")} />
     <title>{routine.frontmatter.title}</title>
   </head>
   <body>
@@ -75,13 +77,13 @@ const Content = routine.default;
 
       <article class="routine-sections">
         <section id="routine" class="routine-panel routine-content">
-          <Content />
+          <Fragment set:html={routineHtml} />
         </section>
       </article>
 
       <nav class="bottom-nav no-print" aria-label="Back to overview">
-        <a href="/">Back to overview</a>
-        <a href="/exercises/">Exercise Instructions</a>
+        <a href={withBase("/")}>Back to overview</a>
+        <a href={withBase("/exercises/")}>Exercise Instructions</a>
       </nav>
     </main>
   </body>

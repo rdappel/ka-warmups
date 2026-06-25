@@ -1,5 +1,6 @@
 ---
 import SiteBrand from "../../components/SiteBrand.astro";
+import { rewriteRootLinks, withBase } from "../../lib/sitePaths";
 
 type ExerciseMarkdown = {
   compiledContent: () => Promise<string>;
@@ -19,7 +20,7 @@ const exercises = await Promise.all(
     return {
       slug,
       title: exercise.frontmatter.title,
-      html: await exercise.compiledContent(),
+      html: rewriteRootLinks(await exercise.compiledContent()),
     };
   }),
 );
@@ -29,15 +30,15 @@ exercises.sort((a, b) => a.title.localeCompare(b.title));
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
+    <link rel="icon" type="image/svg+xml" href={withBase("/favicon.svg")} />
+    <link rel="icon" href={withBase("/favicon.ico")} />
     <meta name="viewport" content="width=device-width" />
     <meta
       name="description"
       content="Alphabetical exercise and stretch instructions for karate warm-up routines."
     />
     <meta name="generator" content={Astro.generator} />
-    <link rel="stylesheet" href="/styles/print.css" />
+    <link rel="stylesheet" href={withBase("/styles/print.css")} />
     <title>Exercise Instructions</title>
   </head>
   <body>
@@ -57,7 +58,7 @@ exercises.sort((a, b) => a.title.localeCompare(b.title));
           exercises.map((exercise) => (
             <article class="exercise-entry" id={exercise.slug}>
               <h2>
-                <a href={`/exercises/${exercise.slug}/`}>{exercise.title}</a>
+                <a href={withBase(`/exercises/${exercise.slug}/`)}>{exercise.title}</a>
               </h2>
               <Fragment set:html={exercise.html} />
             </article>
@@ -66,7 +67,7 @@ exercises.sort((a, b) => a.title.localeCompare(b.title));
       </section>
 
       <nav class="bottom-nav no-print" aria-label="Back to overview">
-        <a href="/">Back to overview</a>
+        <a href={withBase("/")}>Back to overview</a>
       </nav>
     </main>
   </body>

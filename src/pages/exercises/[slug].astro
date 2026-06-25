@@ -1,8 +1,10 @@
 ---
 import SiteBrand from "../../components/SiteBrand.astro";
+import { rewriteRootLinks, withBase } from "../../lib/sitePaths";
 
 type ExerciseMarkdown = {
   default: unknown;
+  compiledContent: () => Promise<string>;
   frontmatter: {
     title: string;
   };
@@ -29,18 +31,18 @@ const exerciseModules = import.meta.glob<ExerciseMarkdown>(
   { eager: true },
 );
 const exercise = exerciseModules[`../../content/warmups/exercises/${slug}.md`];
-const Content = exercise.default;
+const exerciseHtml = rewriteRootLinks(await exercise.compiledContent());
 ---
 
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
+    <link rel="icon" type="image/svg+xml" href={withBase("/favicon.svg")} />
+    <link rel="icon" href={withBase("/favicon.ico")} />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={`${exercise.frontmatter.title} instructions`} />
     <meta name="generator" content={Astro.generator} />
-    <link rel="stylesheet" href="/styles/print.css" />
+    <link rel="stylesheet" href={withBase("/styles/print.css")} />
     <title>{exercise.frontmatter.title}</title>
   </head>
   <body>
@@ -53,12 +55,12 @@ const Content = exercise.default;
       </header>
 
       <article class="exercise-detail">
-        <Content />
+        <Fragment set:html={exerciseHtml} />
       </article>
 
       <nav class="bottom-nav no-print" aria-label="Exercise navigation">
-        <a href="/exercises/">All exercise instructions</a>
-        <a href="/">Back to overview</a>
+        <a href={withBase("/exercises/")}>All exercise instructions</a>
+        <a href={withBase("/")}>Back to overview</a>
       </nav>
     </main>
   </body>
