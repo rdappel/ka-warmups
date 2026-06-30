@@ -22,7 +22,7 @@ time: 10-12 minutes
 
 ### 3. Dynamic Mobility & Activation
 7. [Mountain Climbers](/exercises/mountain-climbers/)
-8. [Bodyweight Squats](/exercises/bodyweight-squats/)
+8. [Skater Hops](/exercises/skater-hops/)
 9. [Squat Jumps](/exercises/squat-jumps/)
 
 ### 4. Karate Integration
