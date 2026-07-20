@@ -10,13 +10,16 @@ type ExerciseMarkdown = {
 };
 
 const exerciseModules = import.meta.glob<ExerciseMarkdown>(
-  "../../content/warmups/exercises/*.md",
+  "../../content/warmups/exercises/**/*.md",
   { eager: true },
 );
+const uniqueBySlug = new Map<string, ExerciseMarkdown>();
+for (const [path, exercise] of Object.entries(exerciseModules).sort(([a], [b]) => a.localeCompare(b))) {
+  const slug = path.split(/[\\/]/).pop()?.replace(/\.md$/, "") ?? "";
+  if (!uniqueBySlug.has(slug)) uniqueBySlug.set(slug, exercise);
+}
 const exercises = await Promise.all(
-  Object.entries(exerciseModules).map(async ([path, exercise]) => {
-    const slug = path.split(/[\\/]/).pop()?.replace(/\.md$/, "") ?? "";
-
+  Array.from(uniqueBySlug.entries()).map(async ([slug, exercise]) => {
     return {
       slug,
       title: exercise.frontmatter.title,

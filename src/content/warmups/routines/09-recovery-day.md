@@ -11,8 +11,8 @@ time: 10-12 minutes
 ## Overview
 
 ### 1. Raise Body Temperature
-1. [March in Place](/exercises/march-in-place/)
-2. [Step Jack into Guard Position](/exercises/step-jack-guard-position/)
+1. [March in Place](/exercises/march-in-place/) (30 seconds)
+2. [Step Jack into Guard Position](/exercises/step-jack-guard-position/) (30 seconds)
 
 ### 2. Joint Mobility
 3. [Neck Turns and Nods](/exercises/neck-turns-and-nods/)
@@ -21,15 +21,15 @@ time: 10-12 minutes
 6. [Hip Circles](/exercises/hip-circles/)
 
 ### 3. Dynamic Mobility & Activation
-7. [Standing Cat-Cow Flow](/exercises/standing-cat-cow-flow/)
-8. [Gentle Front-to-Back Leg Swings](/exercises/gentle-front-to-back-leg-swings/)
-9. [Standing Forward Fold to Half Lift](/exercises/standing-forward-fold-to-half-lift/)
+7. [Standing Cat-Cow Flow](/exercises/standing-cat-cow-flow/) (8 reps)
+8. [Gentle Front-to-Back Leg Swings](/exercises/gentle-front-to-back-leg-swings/) (8 reps per side)
+9. [Standing Forward Fold to Half Lift](/exercises/standing-forward-fold-to-half-lift/) (8 reps)
 
 ### 4. Karate Integration
-10. [Slow Step with Straight Punch](/exercises/slow-step-straight-punch/)
-11. [Slow Knee Raise into Front Kick](/exercises/slow-knee-raise-front-kick/)
+10. [Slow Step with Straight Punch](/exercises/slow-step-straight-punch/) (10 reps, alternating sides)
+11. [Slow Knee Raise into Front Kick](/exercises/slow-knee-raise-front-kick/) (8 reps per side)
 
 ### 5. Finish / Reset
-12. [Standing Hamstring Stretch](/exercises/standing-hamstring-stretch/)
-13. [Cross-Body Shoulder Stretch](/exercises/cross-body-shoulder-stretch/)
+12. [Standing Hamstring Stretch](/exercises/standing-hamstring-stretch/) (30 seconds per side)
+13. [Cross-Body Shoulder Stretch](/exercises/cross-body-shoulder-stretch/) (30 seconds, alternating sides)
 14. [Stretch Tight Areas](/exercises/stretch-tight-areas/)

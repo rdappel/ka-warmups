@@ -11,8 +11,8 @@ time: 10-12 minutes
 ## Overview
 
 ### 1. Raise Body Temperature
-1. [Light Jog in Place](/exercises/light-jog-in-place/)
-2. [Jumping Jack with Low Block](/exercises/jumping-jack-low-block/)
+1. [Light Jog in Place](/exercises/light-jog-in-place/) (30 seconds)
+2. [Jumping Jack with Low Block](/exercises/jumping-jack-low-block/) (30 seconds)
 
 ### 2. Joint Mobility
 3. [Shoulder Circles](/exercises/shoulder-circles/)
@@ -21,15 +21,15 @@ time: 10-12 minutes
 6. [Trunk Twist](/exercises/trunk-twists/)
 
 ### 3. Dynamic Mobility & Activation
-7. [Front Stance Transitions](/exercises/front-stance-transitions/)
-8. [Standing Knee Hugs](/exercises/standing-knee-hugs/)
-9. [Standing Hip Openers](/exercises/standing-hip-openers/)
+7. [Front Stance Transitions](/exercises/front-stance-transitions/) (8 reps per side)
+8. [Standing Knee Hugs](/exercises/standing-knee-hugs/) (8 reps per side)
+9. [Standing Hip Openers](/exercises/standing-hip-openers/) (8 reps per side)
 
 ### 4. Karate Integration
-10. [Slow Low Block in Front Stance](/exercises/slow-low-block-front-stance/)
-11. [Controlled Front Kick with Re-Chamber](/exercises/controlled-front-kick-chamber-extend-re-chamber/)
+10. [Slow Low Block in Front Stance](/exercises/slow-low-block-front-stance/) (8 reps per side)
+11. [Controlled Front Kick with Re-Chamber](/exercises/controlled-front-kick-chamber-extend-re-chamber/) (8 reps per side)
 
 ### 5. Finish / Reset
-12. [Cross-Body Shoulder Stretch](/exercises/cross-body-shoulder-stretch/)
-13. [Standing Calf Stretch](/exercises/standing-calf-stretch/)
+12. [Cross-Body Shoulder Stretch](/exercises/cross-body-shoulder-stretch/) (30 seconds, alternating sides)
+13. [Standing Calf Stretch](/exercises/standing-calf-stretch/) (30 seconds per side)
 14. [Stretch Tight Areas](/exercises/stretch-tight-areas/)

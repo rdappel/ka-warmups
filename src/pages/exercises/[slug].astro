@@ -12,12 +12,15 @@ type ExerciseMarkdown = {
 
 export async function getStaticPaths() {
   const exerciseModules = import.meta.glob<ExerciseMarkdown>(
-    "../../content/warmups/exercises/*.md",
+    "../../content/warmups/exercises/**/*.md",
     { eager: true },
   );
 
-  return Object.keys(exerciseModules)
-    .map((path) => path.split(/[\\/]/).pop()?.replace(/\.md$/, "") ?? "")
+  const slugs = new Set(
+    Object.keys(exerciseModules).map((path) => path.split(/[\\/]/).pop()?.replace(/\.md$/, "") ?? ""),
+  );
+
+  return Array.from(slugs)
     .sort()
     .map((slug) => ({
       params: { slug },
@@ -27,10 +30,13 @@ export async function getStaticPaths() {
 
 const { slug } = Astro.props;
 const exerciseModules = import.meta.glob<ExerciseMarkdown>(
-  "../../content/warmups/exercises/*.md",
+  "../../content/warmups/exercises/**/*.md",
   { eager: true },
 );
-const exercise = exerciseModules[`../../content/warmups/exercises/${slug}.md`];
+const exerciseEntry = Object.entries(exerciseModules).find(
+  ([path]) => path.split(/[\\/]/).pop() === `${slug}.md`,
+);
+const exercise = exerciseEntry![1];
 const exerciseHtml = rewriteRootLinks(await exercise.compiledContent());
 ---
 
