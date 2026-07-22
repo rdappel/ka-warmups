@@ -202,16 +202,34 @@ const demoItems = await Promise.all(
         if (slidesEl) slidesEl.scrollTop = 0;
       }
 
+      function requestFullscreen(el: HTMLElement) {
+        const anyEl = el as any;
+        const request = el.requestFullscreen || anyEl.webkitRequestFullscreen;
+        return request?.call(el);
+      }
+
+      function exitFullscreen() {
+        const anyDoc = document as any;
+        const isFullscreen = document.fullscreenElement || anyDoc.webkitFullscreenElement;
+        if (!isFullscreen) return;
+        const exit = document.exitFullscreen || anyDoc.webkitExitFullscreen;
+        exit?.call(document);
+      }
+
       function openDemo() {
         current = 0;
         render();
-        if (modal) modal.hidden = false;
+        if (modal) {
+          modal.hidden = false;
+          requestFullscreen(modal)?.catch(() => {});
+        }
         document.body.style.overflow = "hidden";
       }
 
       function closeDemo() {
         if (modal) modal.hidden = true;
         document.body.style.overflow = "";
+        exitFullscreen();
       }
 
       function next() {
@@ -243,6 +261,14 @@ const demoItems = await Promise.all(
         else if (e.key === "ArrowRight") next();
         else if (e.key === "Escape") closeDemo();
       });
+
+      function handleFullscreenChange() {
+        const anyDoc = document as any;
+        const isFullscreen = document.fullscreenElement || anyDoc.webkitFullscreenElement;
+        if (!isFullscreen && modal && !modal.hidden) closeDemo();
+      }
+      document.addEventListener("fullscreenchange", handleFullscreenChange);
+      document.addEventListener("webkitfullscreenchange", handleFullscreenChange);
 
       let touchStartX: number | null = null;
       slidesEl?.addEventListener(
