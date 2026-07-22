@@ -6,6 +6,7 @@ type ExerciseMarkdown = {
   compiledContent: () => Promise<string>;
   frontmatter: {
     title: string;
+    alternateFor?: string[];
   };
 };
 
@@ -20,10 +21,20 @@ for (const [path, exercise] of Object.entries(exerciseModules).sort(([a], [b]) =
 }
 const exercises = await Promise.all(
   Array.from(uniqueBySlug.entries()).map(async ([slug, exercise]) => {
+    const alternates = Array.from(uniqueBySlug.entries())
+      .filter(([, mod]) => mod.frontmatter.alternateFor?.includes(slug))
+      .map(([altSlug, mod]) => ({ slug: altSlug, title: mod.frontmatter.title }))
+      .sort((a, b) => a.title.localeCompare(b.title));
+    const modificationFor = (exercise.frontmatter.alternateFor ?? [])
+      .map((primarySlug) => ({ slug: primarySlug, title: uniqueBySlug.get(primarySlug)?.frontmatter.title ?? primarySlug }))
+      .sort((a, b) => a.title.localeCompare(b.title));
+
     return {
       slug,
       title: exercise.frontmatter.title,
       html: rewriteRootLinks(await exercise.compiledContent()),
+      alternates,
+      modificationFor,
     };
   }),
 );
@@ -63,7 +74,28 @@ exercises.sort((a, b) => a.title.localeCompare(b.title));
               <h2>
                 <a href={withBase(`/exercises/${exercise.slug}/`)}>{exercise.title}</a>
               </h2>
+              {exercise.modificationFor.length > 0 && (
+                <p class="modification-badge">
+                  <sup class="alt-marker">⇄</sup> Modification for:{" "}
+                  {exercise.modificationFor.map((primary, i) => (
+                    <>
+                      {i > 0 && ", "}
+                      <a href={withBase(`/exercises/${primary.slug}/`)}>{primary.title}</a>
+                    </>
+                  ))}
+                </p>
+              )}
               <Fragment set:html={exercise.html} />
+              {exercise.alternates.length > 0 && (
+                <>
+                  <h3>Alternates</h3>
+                  <ul>
+                    {exercise.alternates.map((alt) => (
+                      <li><a href={withBase(`/exercises/${alt.slug}/`)}>{alt.title}</a></li>
+                    ))}
+                  </ul>
+                </>
+              )}
             </article>
           ))
         }
@@ -71,6 +103,7 @@ exercises.sort((a, b) => a.title.localeCompare(b.title));
 
       <nav class="bottom-nav no-print" aria-label="Back to overview">
         <a href={withBase("/")}>Back to overview</a>
+        <a href="#">Back to top</a>
       </nav>
     </main>
   </body>

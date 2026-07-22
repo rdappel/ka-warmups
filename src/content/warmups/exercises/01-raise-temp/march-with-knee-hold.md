@@ -1,5 +1,6 @@
 ---
-title: "March with Knee Lifts"
+title: "March with Knee Hold"
+alternateFor: ["high-knees"]
 ---
 
-March in place and lift each knee deliberately toward hip height. Keep posture upright and land softly.
+March in place. Hug raised knee toward the chest on every third step, before lowering. Keep posture upright and land softly.

@@ -13,3 +13,13 @@ export function rewriteRootLinks(html: string) {
     .replaceAll('href="/routines/', `href="${withBase("/routines/")}`)
     .replaceAll('href="/"', `href="${withBase("/")}"`);
 }
+
+export function markExercisesWithAlternates(html: string, slugsWithAlternates: Set<string>) {
+  return html.replace(
+    /<a href="\/exercises\/([a-z0-9-]+)\/">([^<]*)<\/a>/g,
+    (match, slug: string) =>
+      slugsWithAlternates.has(slug)
+        ? `${match}<sup class="alt-marker" title="Alternate/modification version available">⇄</sup>`
+        : match,
+  );
+}

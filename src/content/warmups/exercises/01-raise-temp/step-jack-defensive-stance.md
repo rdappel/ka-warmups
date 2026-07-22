@@ -1,5 +1,5 @@
 ---
-title: "Step Jack into Guard Position"
+title: "Step Jack into Defensive Stance"
 ---
 
-Step out and in like a jumping jack, then settle into guard. Alternate lead sides.
+Step out and in like a jumping jack, then settle into defensive stance. Alternate lead sides.

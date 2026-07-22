@@ -1,13 +1,22 @@
 ---
 import SiteBrand from "../../components/SiteBrand.astro";
-import { rewriteRootLinks, withBase } from "../../lib/sitePaths";
+import { markExercisesWithAlternates, rewriteRootLinks, withBase } from "../../lib/sitePaths";
 
 type WarmupMarkdown = {
   default: unknown;
   compiledContent: () => Promise<string>;
+  rawContent: () => string;
   frontmatter: {
     title: string;
     theme: string;
+  };
+};
+
+type ExerciseMarkdown = {
+  compiledContent: () => Promise<string>;
+  frontmatter: {
+    title: string;
+    alternateFor?: string[];
   };
 };
 
@@ -46,7 +55,52 @@ const routineModules = import.meta.glob<WarmupMarkdown>(
   { eager: true },
 );
 const routine = routineModules[`../../content/warmups/routines/${slug}.md`];
-const routineHtml = rewriteRootLinks(await routine.compiledContent());
+
+const exerciseModules = import.meta.glob<ExerciseMarkdown>(
+  "../../content/warmups/exercises/**/*.md",
+  { eager: true },
+);
+const slugsWithAlternates = new Set<string>();
+for (const exercise of Object.values(exerciseModules)) {
+  for (const primarySlug of exercise.frontmatter.alternateFor ?? []) {
+    slugsWithAlternates.add(primarySlug);
+  }
+}
+
+const markedRoutineHtml = markExercisesWithAlternates(await routine.compiledContent(), slugsWithAlternates);
+const hasAlternatesInRoutine = markedRoutineHtml.includes('class="alt-marker"');
+const routineHtml = rewriteRootLinks(markedRoutineHtml);
+
+const exerciseBySlug = new Map<string, ExerciseMarkdown>();
+for (const [path, mod] of Object.entries(exerciseModules)) {
+  const otherSlug = path.split(/[\\/]/).pop()?.replace(/\.md$/, "") ?? "";
+  if (!exerciseBySlug.has(otherSlug)) exerciseBySlug.set(otherSlug, mod);
+}
+
+const phaseChunks = routine.rawContent().split(/\n### /).slice(1);
+const parsedItems: { phase: string; title: string; slug: string; meta: string }[] = [];
+for (const chunk of phaseChunks) {
+  const [headerLine, ...rest] = chunk.split("\n");
+  const phase = headerLine.replace(/^\d+\.\s*/, "").trim();
+  const body = rest.join("\n");
+  const itemRegex = /^\d+\.\s*\[([^\]]+)\]\(\/exercises\/([a-z0-9-]+)\/\)\s*(\([^)]*\))?/gm;
+  let match;
+  while ((match = itemRegex.exec(body))) {
+    parsedItems.push({ phase, title: match[1], slug: match[2], meta: match[3]?.replace(/^\(|\)$/g, "") ?? "" });
+  }
+}
+
+const demoItems = await Promise.all(
+  parsedItems.map(async (item) => {
+    const exercise = exerciseBySlug.get(item.slug);
+    const html = exercise ? rewriteRootLinks(await exercise.compiledContent()) : "";
+    const alternates = Array.from(exerciseBySlug.entries())
+      .filter(([, mod]) => mod.frontmatter.alternateFor?.includes(item.slug))
+      .map(([, mod]) => mod.frontmatter.title)
+      .sort((a, b) => a.localeCompare(b));
+    return { ...item, html, alternates };
+  }),
+);
 ---
 
 <html lang="en">
@@ -73,6 +127,14 @@ const routineHtml = rewriteRootLinks(await routine.compiledContent());
         <div class="routine-meta">
           <span class="badge">{routine.frontmatter.theme}</span>
         </div>
+        {hasAlternatesInRoutine && (
+          <p class="alt-legend">
+            <sup class="alt-marker">⇄</sup> Modification/alternate version available in the exercise instructions
+          </p>
+        )}
+        <button id="demo-toggle" class="demo-toggle no-print" type="button">
+          ▶ Demo Mode
+        </button>
       </header>
 
       <article class="routine-sections">
@@ -84,7 +146,122 @@ const routineHtml = rewriteRootLinks(await routine.compiledContent());
       <nav class="bottom-nav no-print" aria-label="Back to overview">
         <a href={withBase("/")}>Back to overview</a>
         <a href={withBase("/exercises/")}>Exercise Instructions</a>
+        <a href="#">Back to top</a>
       </nav>
+
+      <div id="demo-mode" class="demo-mode no-print" hidden>
+        <div class="demo-header">
+          <div class="demo-header-info">
+            <p class="demo-routine-name">{routine.frontmatter.title}</p>
+            <p id="demo-progress" class="demo-progress"></p>
+          </div>
+          <button id="demo-close" class="demo-close" type="button" aria-label="Close demo mode">✕</button>
+        </div>
+        <div id="demo-slides" class="demo-slides">
+          {demoItems.map((item) => (
+            <div class="demo-slide" hidden>
+              <p class="demo-phase">{item.phase}</p>
+              <h2 class="demo-title">{item.title}</h2>
+              <div class="demo-instructions" set:html={item.html} />
+              {item.meta && <p class="demo-meta">{item.meta}</p>}
+              {item.alternates.length > 0 && (
+                <p class="demo-alternates">
+                  <sup class="alt-marker">⇄</sup> Alternates: {item.alternates.join(", ")}
+                </p>
+              )}
+            </div>
+          ))}
+        </div>
+        <div class="demo-controls">
+          <button id="demo-prev" class="demo-nav-btn" type="button" aria-label="Previous exercise">‹</button>
+          <button id="demo-next" class="demo-nav-btn" type="button" aria-label="Next exercise">›</button>
+        </div>
+        <a href="#" id="demo-exit" class="demo-exit">Return to full routine</a>
+      </div>
     </main>
+
+    <script>
+      const toggle = document.getElementById("demo-toggle");
+      const modal = document.getElementById("demo-mode");
+      const closeBtn = document.getElementById("demo-close");
+      const exitLink = document.getElementById("demo-exit");
+      const prevBtn = document.getElementById("demo-prev") as HTMLButtonElement | null;
+      const nextBtn = document.getElementById("demo-next") as HTMLButtonElement | null;
+      const progress = document.getElementById("demo-progress");
+      const slidesEl = document.getElementById("demo-slides");
+      const slides = Array.from(document.querySelectorAll<HTMLElement>(".demo-slide"));
+      let current = 0;
+
+      function render() {
+        slides.forEach((slide, i) => {
+          slide.hidden = i !== current;
+        });
+        if (progress) progress.textContent = `${current + 1} / ${slides.length}`;
+        if (prevBtn) prevBtn.disabled = current === 0;
+        if (nextBtn) nextBtn.disabled = current === slides.length - 1;
+        if (slidesEl) slidesEl.scrollTop = 0;
+      }
+
+      function openDemo() {
+        current = 0;
+        render();
+        if (modal) modal.hidden = false;
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeDemo() {
+        if (modal) modal.hidden = true;
+        document.body.style.overflow = "";
+      }
+
+      function next() {
+        if (current < slides.length - 1) {
+          current++;
+          render();
+        }
+      }
+
+      function prev() {
+        if (current > 0) {
+          current--;
+          render();
+        }
+      }
+
+      toggle?.addEventListener("click", openDemo);
+      closeBtn?.addEventListener("click", closeDemo);
+      exitLink?.addEventListener("click", (e) => {
+        e.preventDefault();
+        closeDemo();
+      });
+      prevBtn?.addEventListener("click", prev);
+      nextBtn?.addEventListener("click", next);
+
+      document.addEventListener("keydown", (e) => {
+        if (!modal || modal.hidden) return;
+        if (e.key === "ArrowLeft") prev();
+        else if (e.key === "ArrowRight") next();
+        else if (e.key === "Escape") closeDemo();
+      });
+
+      let touchStartX: number | null = null;
+      slidesEl?.addEventListener(
+        "touchstart",
+        (e) => {
+          touchStartX = e.touches[0].clientX;
+        },
+        { passive: true },
+      );
+      slidesEl?.addEventListener("touchend", (e) => {
+        if (touchStartX === null) return;
+        const deltaX = e.changedTouches[0].clientX - touchStartX;
+        const threshold = 50;
+        if (deltaX < -threshold) next();
+        else if (deltaX > threshold) prev();
+        touchStartX = null;
+      });
+
+      render();
+    </script>
   </body>
 </html>

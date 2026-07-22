@@ -1,7 +1,7 @@
 ---
-title: "Squat with Rising Block"
+title: "Squat with High Block"
 ---
 
-Perform a controlled squat, stand, then execute a rising block. Alternate arms.
+Perform a controlled squat, stand, then execute a high block. Alternate arms.
 
 **Modification:** Shallow squat.

@@ -12,24 +12,26 @@ time: 10-12 minutes
 
 ### 1. Raise Body Temperature
 1. [Lateral Skater Steps](/exercises/skater-steps/) (30 seconds)
-2. [High Knees into Guard Position](/exercises/high-knees-guard-position/) (30 seconds)
+2. [High Knees into Defensive Stance](/exercises/high-knees-defensive-stance/) (30 seconds)
+3. [Mountain Climbers](/exercises/mountain-climbers/) (20 seconds)
 
 ### 2. Joint Mobility
-3. [Neck Turns and Nods](/exercises/neck-turns-and-nods/)
-4. [Shoulder Circles](/exercises/shoulder-circles/)
-5. [Hip Circles](/exercises/hip-circles/)
-6. [Ankle Circles](/exercises/ankle-circles/)
+4. [Neck Turns and Nods](/exercises/neck-turns-and-nods/)
+5. [Shoulder Circles](/exercises/shoulder-circles/)
+6. [Hip Circles](/exercises/hip-circles/)
+7. [Ankle Circles](/exercises/ankle-circles/)
 
 ### 3. Dynamic Mobility & Activation
-7. [Single-Leg Balance Reaches](/exercises/single-leg-balance-reaches/) (8 reps per side)
-8. [Standing Knee Hugs](/exercises/standing-knee-hugs/) (8 reps per side)
-9. [Lateral Lunges](/exercises/lateral-lunges/) (8 reps per side)
+8. [Single-Leg Balance Reaches](/exercises/single-leg-balance-reaches/) (8 reps per side)
+9. [Standing Knee Hugs](/exercises/standing-knee-hugs/) (8 reps per side)
+10. [Lateral Lunges](/exercises/lateral-lunges/) (8 reps per side)
 
 ### 4. Karate Integration
-10. [Single-Leg Balance with Front Kick](/exercises/single-leg-balance-front-kick/) (8 reps per side)
-11. [Crane Stance with Straight Punches](/exercises/crane-stance-straight-punches/) (8 reps per side)
+11. [Single-Leg Balance with Front Kick](/exercises/single-leg-balance-front-kick/) (8 reps per side)
+12. [Slow Front Kick](/exercises/slow-front-kick/) (8 reps per side)
+13. [Chamber Holds](/exercises/chamber-holds/) (8 reps per side)
 
 ### 5. Finish / Reset
-12. [Standing Hip Flexor/Quad Stretch](/exercises/standing-quad-stretch/) (30 seconds per side)
-13. [Standing Calf Stretch](/exercises/standing-calf-stretch/) (30 seconds per side)
-14. [Stretch Tight Areas](/exercises/stretch-tight-areas/)
+14. [Standing Hip Flexor/Quad Stretch](/exercises/standing-hip-flexor-quad-stretch/) (30 seconds per side)
+15. [Standing Calf Stretch](/exercises/standing-calf-stretch/) (30 seconds per side)
+16. [Stretch Tight Areas](/exercises/stretch-tight-areas/)

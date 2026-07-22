@@ -7,6 +7,7 @@ type ExerciseMarkdown = {
   compiledContent: () => Promise<string>;
   frontmatter: {
     title: string;
+    alternateFor?: string[];
   };
 };
 
@@ -38,6 +39,19 @@ const exerciseEntry = Object.entries(exerciseModules).find(
 );
 const exercise = exerciseEntry![1];
 const exerciseHtml = rewriteRootLinks(await exercise.compiledContent());
+
+const bySlug = new Map<string, ExerciseMarkdown>();
+for (const [path, mod] of Object.entries(exerciseModules)) {
+  const otherSlug = path.split(/[\\/]/).pop()?.replace(/\.md$/, "") ?? "";
+  if (!bySlug.has(otherSlug)) bySlug.set(otherSlug, mod);
+}
+const alternates = Array.from(bySlug.entries())
+  .filter(([, mod]) => mod.frontmatter.alternateFor?.includes(slug))
+  .map(([altSlug, mod]) => ({ slug: altSlug, title: mod.frontmatter.title }))
+  .sort((a, b) => a.title.localeCompare(b.title));
+const modificationFor = (exercise.frontmatter.alternateFor ?? [])
+  .map((primarySlug) => ({ slug: primarySlug, title: bySlug.get(primarySlug)?.frontmatter.title ?? primarySlug }))
+  .sort((a, b) => a.title.localeCompare(b.title));
 ---
 
 <html lang="en">
@@ -58,15 +72,37 @@ const exerciseHtml = rewriteRootLinks(await exercise.compiledContent());
       <header class="page-header">
         <p class="eyebrow">Exercise instruction</p>
         <h1>{exercise.frontmatter.title}</h1>
+        {modificationFor.length > 0 && (
+          <p class="modification-badge">
+            <sup class="alt-marker">⇄</sup> Modification for:{" "}
+            {modificationFor.map((primary, i) => (
+              <>
+                {i > 0 && ", "}
+                <a href={withBase(`/exercises/${primary.slug}/`)}>{primary.title}</a>
+              </>
+            ))}
+          </p>
+        )}
       </header>
 
       <article class="exercise-detail">
         <Fragment set:html={exerciseHtml} />
+        {alternates.length > 0 && (
+          <>
+            <h2>Alternates</h2>
+            <ul>
+              {alternates.map((alt) => (
+                <li><a href={withBase(`/exercises/${alt.slug}/`)}>{alt.title}</a></li>
+              ))}
+            </ul>
+          </>
+        )}
       </article>
 
       <nav class="bottom-nav no-print" aria-label="Exercise navigation">
         <a href={withBase("/exercises/")}>All exercise instructions</a>
         <a href={withBase("/")}>Back to overview</a>
+        <a href="#">Back to top</a>
       </nav>
     </main>
   </body>
