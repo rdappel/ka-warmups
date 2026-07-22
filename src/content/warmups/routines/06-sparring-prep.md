@@ -27,7 +27,7 @@ time: 10-12 minutes
 10. [Lateral Shuffle](/exercises/lateral-shuffle/) (30 seconds)
 
 ### 4. Karate Integration
-11. [Forward-and-Back Shuffle with Guard](/exercises/forward-and-back-shuffle-with-guard/) (30 seconds)
+11. [Kick Focused Shadow Boxing](/exercises/kick-focused-shadow-boxing/) (30 seconds)
 12. [Step Off-Line with Cross](/exercises/step-off-line-reverse-punch/) (10 reps, alternating sides)
 13. [Slow Hook-Round Kick](/exercises/slow-hook-round-kick/) (8 reps per side)
 

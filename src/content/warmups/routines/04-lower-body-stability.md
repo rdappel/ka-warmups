@@ -23,7 +23,7 @@ time: 10-12 minutes
 
 ### 3. Dynamic Mobility & Activation
 8. [Reverse Lunges](/exercises/reverse-lunges/) (8 reps per side)
-9. [Bodyweight Squats](/exercises/bodyweight-squats/) (10 reps)
+9. [Single-Leg Balance Reaches](/exercises/single-leg-balance-reaches/) (8 reps per side)
 10. [Standing Calf Raises](/exercises/standing-calf-raises/) (12 reps)
 
 ### 4. Karate Integration

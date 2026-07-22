@@ -11,7 +11,7 @@ time: 10-12 minutes
 ## Overview
 
 ### 1. Raise Body Temperature
-1. [March in Place](/exercises/march-in-place/) (30 seconds)
+1. [Butt Kicks](/exercises/butt-kicks/) (30 seconds)
 2. [Step Jack into Defensive Stance](/exercises/step-jack-defensive-stance/) (30 seconds)
 3. [Jog in Place](/exercises/jog-in-place/) (30 seconds)
 
@@ -22,7 +22,7 @@ time: 10-12 minutes
 7. [Hip Circles](/exercises/hip-circles/)
 
 ### 3. Dynamic Mobility & Activation
-8. [Standing Cross-Body Reaches](/exercises/standing-cross-body-reaches/) (8 reps per side)
+8. [Arm Crosses](/exercises/arm-crosses/) (10 reps)
 9. [Front-to-Back Leg Swings](/exercises/front-to-back-leg-swings/) (8 reps per side)
 10. [Elephant Walks](/exercises/elephant-walks/) (8 reps)
 

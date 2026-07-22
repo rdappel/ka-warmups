@@ -11,7 +11,7 @@ time: 10-12 minutes
 ## Overview
 
 ### 1. Raise Body Temperature
-1. [Lateral Skater Steps](/exercises/skater-steps/) (30 seconds)
+1. [Side Shuffle](/exercises/side-shuffle/) (30 seconds)
 2. [High Knees into Defensive Stance](/exercises/high-knees-defensive-stance/) (30 seconds)
 3. [Mountain Climbers](/exercises/mountain-climbers/) (20 seconds)
 

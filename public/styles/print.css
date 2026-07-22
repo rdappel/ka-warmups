@@ -423,6 +423,7 @@ hr {
   font-size: 1.75rem;
   line-height: 1.45;
   margin: 0 0 1.5rem;
+  text-align: justify;
 }
 
 .demo-instructions p {

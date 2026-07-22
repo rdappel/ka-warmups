@@ -2,4 +2,4 @@
 title: "Fast Feet"
 ---
 
-Use quick, small steps in place with knees soft and hands up. Stay light on the feet without holding tension in the shoulders. Keep the effort short and controlled.
+Start by jogging in place. When the instructor says "go", lift knees (alternating) to touch hands 10 times. Then return to jogging in place. Repeat 3-5 times.
